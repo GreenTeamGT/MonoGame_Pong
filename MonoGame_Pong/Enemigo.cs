@@ -16,14 +16,14 @@ namespace MonoGame_Pong
 
         public Enemigo() {
             _textura = Tools.Texture.CreateColorTexture(Game1._graphics.GraphicsDevice, Color.Red, 20, 50);
-            _posicion = new Point(300, 50);
+            _posicion = new Point(650, 250);
         }
 
         public void Draw(SpriteBatch rspriteBatch) {
             rspriteBatch.Draw(_textura, _rectangulo, Color.White);
         }
-        public void Update() {
-
+        public void Update(Pelota rpelota) {
+            _posicion.Y = rpelota._rectangulo.Center.Y;
         }
     }
 }

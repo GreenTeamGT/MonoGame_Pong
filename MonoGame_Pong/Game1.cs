@@ -80,6 +80,7 @@ namespace MonoGame_Pong
                 Exit();
 
             _pelota.Update(_enemigo, _jugador);
+            _enemigo.Update(_pelota);
 
             base.Update(gameTime);
         }

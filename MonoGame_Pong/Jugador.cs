@@ -16,7 +16,7 @@ namespace MonoGame_Pong
 
         public Jugador() {
             _textura = Tools.Texture.CreateColorTexture(Game1._graphics.GraphicsDevice, Color.Red, 20, 50);
-            _posicion = new Point(0, 50);
+            _posicion = new Point(50, 250);
         }
 
         public void Draw(SpriteBatch rspriteBatch) {
