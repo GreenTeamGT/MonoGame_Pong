@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using zUI;
 
 /*
  https://www.monogame.net/webdemo/
@@ -21,12 +22,20 @@ https://awesomeopensource.com/project/riperiperi/FreeSO
 
 namespace MonoGame_Pong
 {
+    public enum _GameState
+    {
+        modo_juego,
+        game_over,
+        pausa
+    }
     public class Game1 : Game
     {
 
         Jugador _jugador;
         Pelota _pelota;
         Enemigo _enemigo;
+        public static _GameState _gameState;
+        Label _gameOverLabel;
 
         public static GraphicsDeviceManager _graphics;
         public static ContentManager contentManager;
@@ -62,6 +71,16 @@ namespace MonoGame_Pong
             _jugador = new Jugador();
             _pelota = new Pelota();
             _enemigo = new Enemigo();
+            _gameState = _GameState.modo_juego;
+            Texture2D _fontTexture = Tools.Texture.GetTexture(_graphics.GraphicsDevice, contentManager, "MyFont_PNG_260x56");
+            char[,] _chars = {
+                { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' },
+                { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' },
+                { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0' },
+                { ',', ':', ';', '?', '.', '!', ' ','\'','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0' }
+            };
+            SpriteFont _spriteFont = Tools.Font.GenerateFont(_fontTexture, _chars);
+            _gameOverLabel = new Label(new Rectangle(0, 0, 700, 250), _spriteFont, "GAME OVER!\nPRESS 'P' TO RESTART", Label.TextAlignment.Midle_Center, Color.Green, lineSpacing:15 );
 
 
             base.Initialize();
@@ -79,12 +98,26 @@ namespace MonoGame_Pong
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            
+            KeyboardState _keyboardState = Keyboard.GetState();
 
+            if (_gameState == _GameState.modo_juego )
+            {
+                _pelota.Update(_enemigo, _jugador);
+                _enemigo.Update(_pelota);
+                _jugador.Update();
+            } else if ( _gameState == _GameState.game_over ) { 
+                if (_keyboardState.IsKeyDown(Keys.P))
+                {
+                    _pelota = new Pelota();
+                    _gameState = _GameState.modo_juego;
+                }
+            }
 
-            _pelota.Update(_enemigo, _jugador);
-            _enemigo.Update(_pelota);
-            _jugador.Update();
+            if (_pelota._rectangulo.X < _jugador._rectangulo.X || _pelota._rectangulo.X > _enemigo._rectangulo.X)
+            {
+                _gameState = _GameState.game_over;
+            }
+
 
             base.Update(gameTime);
         }
@@ -97,6 +130,11 @@ namespace MonoGame_Pong
             _jugador.Draw(_spriteBatch);
             _pelota.Draw(_spriteBatch);
             _enemigo.Draw(_spriteBatch);
+
+            if (_gameState == _GameState.game_over)
+            {
+                _gameOverLabel.Draw(_spriteBatch);
+            }
 
             this._spriteBatch.End();
             base.Draw(gameTime);

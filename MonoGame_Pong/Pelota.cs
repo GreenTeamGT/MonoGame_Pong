@@ -20,7 +20,7 @@ namespace MonoGame_Pong
 
         public Pelota() {
             _textura = Tools.Texture.CreateColorTexture(Game1._graphics.GraphicsDevice, Color.Blue, 10, 10);
-            _posicion = new Point(50, 50);
+            _posicion = new Point(350, 250);
         }
 
         public void Draw(SpriteBatch rspriteBatch) {
