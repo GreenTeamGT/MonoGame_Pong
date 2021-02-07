@@ -25,6 +25,8 @@ namespace MonoGame_Pong
     {
 
         Jugador _jugador;
+        Pelota _pelota;
+        Enemigo _enemigo;
 
         public static GraphicsDeviceManager _graphics;
         public static ContentManager contentManager;
@@ -58,6 +60,9 @@ namespace MonoGame_Pong
             }
 
             _jugador = new Jugador();
+            _pelota = new Pelota();
+            _enemigo = new Enemigo();
+
 
             base.Initialize();
 
@@ -74,6 +79,7 @@ namespace MonoGame_Pong
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            _pelota.Update(_enemigo, _jugador);
 
             base.Update(gameTime);
         }
@@ -84,6 +90,8 @@ namespace MonoGame_Pong
 
             // ToDo: Code
             _jugador.Draw(_spriteBatch);
+            _pelota.Draw(_spriteBatch);
+            _enemigo.Draw(_spriteBatch);
 
             this._spriteBatch.End();
             base.Draw(gameTime);
