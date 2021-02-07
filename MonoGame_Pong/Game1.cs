@@ -79,8 +79,12 @@ namespace MonoGame_Pong
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            
+
+
             _pelota.Update(_enemigo, _jugador);
             _enemigo.Update(_pelota);
+            _jugador.Update();
 
             base.Update(gameTime);
         }

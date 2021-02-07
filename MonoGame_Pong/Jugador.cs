@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace MonoGame_Pong
 {
     class Jugador
     {
+
+        int _veocidad = 3;
         Texture2D _textura;
         Point _posicion;
         public Rectangle _rectangulo { get => new Rectangle(_posicion.X - (_textura.Width / 2), _posicion.Y - (_textura.Height / 2), _textura.Width, _textura.Height); }
@@ -23,7 +26,15 @@ namespace MonoGame_Pong
             rspriteBatch.Draw(_textura, _rectangulo, Color.White);
         }
         public void Update() {
-
+            KeyboardState keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.Up) && _posicion.Y >= 0)
+            {
+                _posicion.Y -= _veocidad;
+            }
+            if (keyboardState.IsKeyDown(Keys.Down) && _posicion.Y <= 500)
+            {
+                _posicion.Y += _veocidad;
+            }
         }
 
     }
