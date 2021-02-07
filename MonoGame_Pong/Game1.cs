@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -23,20 +24,45 @@ namespace MonoGame_Pong
     public class Game1 : Game
     {
 
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        Jugador _jugador;
+
+        public static GraphicsDeviceManager _graphics;
+        public static ContentManager contentManager;
+        SpriteBatch _spriteBatch;
 
         public Game1() {
+            // Window
             _graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-            IsMouseVisible = true;
-        }
+            _graphics.PreferredBackBufferWidth = 700;
+            _graphics.PreferredBackBufferHeight = 500;
+            _graphics.ApplyChanges();
 
-        protected override void Initialize() {
-            // TODO: Add your initialization logic here
+            // FPS
+            base.IsFixedTimeStep = true;
+            base.TargetElapsedTime = TimeSpan.FromSeconds(1d / 60);
+
+
+            // Content
+            string absolutePath = Path.Combine(Environment.CurrentDirectory, "Content");
+            base.Content.RootDirectory = absolutePath;
+            Game1.contentManager = base.Content;
+
+
+            // others
+            if (true)
+            {
+                // base.Window.IsBorderless = true;
+                Rectangle gameWindow = base.Window.ClientBounds;
+                base.Window.Title = "Pong!";
+                base.IsMouseVisible = true;
+            }
+
+            _jugador = new Jugador();
 
             base.Initialize();
+
         }
+
 
         protected override void LoadContent() {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -57,6 +83,7 @@ namespace MonoGame_Pong
             this._spriteBatch.Begin();
 
             // ToDo: Code
+            _jugador.Draw(_spriteBatch);
 
             this._spriteBatch.End();
             base.Draw(gameTime);
