@@ -19,7 +19,29 @@ using zUI;
 
 namespace MonoGame_Pong
 {
-    
+    public class Wellknown
+    {
+        public class Default
+        {
+            public static readonly int FPS = 60;
+
+            public static readonly int Width = 700;
+            public static readonly int Height = 500;
+        }
+
+        public class Font
+        {
+            public static readonly char[,] chars = new char[,]
+            {
+                { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' },
+                { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' },
+                { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0' },
+                { ',', ':', ';', '?', '.', '!', ' ','\'','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0' }
+            };
+        }
+    }
+
+
     public class Game1 : Game
     {
         Jugador _jugador;
@@ -38,13 +60,13 @@ namespace MonoGame_Pong
         {
             // Window
             _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = 700;
-            _graphics.PreferredBackBufferHeight = 500;
+            _graphics.PreferredBackBufferWidth = Wellknown.Default.Width;
+            _graphics.PreferredBackBufferHeight = Wellknown.Default.Height;
             _graphics.ApplyChanges();
 
             // FPS
             base.IsFixedTimeStep = true;
-            base.TargetElapsedTime = TimeSpan.FromSeconds(1d / 60);
+            base.TargetElapsedTime = TimeSpan.FromSeconds(1d / Wellknown.Default.FPS);
 
             // Content
             string absolutePath = Path.Combine(Environment.CurrentDirectory, "Content");
@@ -61,15 +83,7 @@ namespace MonoGame_Pong
             _enemigo = new Enemigo();
             _gameState = _GameState.modo_juego;
 
-            SpriteFont _spriteFont = Tools.Font.GenerateFont(
-                                                    texture2D: Tools.Texture.GetTexture(_graphics.GraphicsDevice, contentManager, "MyFont_PNG_260x56"),
-                                                    chars: new char[,] {
-                                                                    { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' },
-                                                                    { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' },
-                                                                    { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0' },
-                                                                    { ',', ':', ';', '?', '.', '!', ' ','\'','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0' }
-                                                    }
-            );
+            SpriteFont _spriteFont = Tools.Font.GenerateFont(texture2D: Tools.Texture.GetTexture(_graphics.GraphicsDevice, contentManager, "MyFont_PNG_260x56"), chars: Wellknown.Font.chars);
 
             _gameOverLabel = new Label(new Rectangle(0, 0, 700, 250), _spriteFont, "GAME OVER!\nPRESS 'P' TO RESTART", Label.TextAlignment.Midle_Center, Color.Green, lineSpacing: 15);
 
