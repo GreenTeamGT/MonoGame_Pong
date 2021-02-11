@@ -5,24 +5,24 @@ namespace MonoGame_Pong
 {
     class Enemigo
     {
-        Texture2D _textura;
-        Point _posicion;
-        public Rectangle _rectangulo { get => new Rectangle(_posicion.X - (_textura.Width / 2), _posicion.Y - (_textura.Height / 2), _textura.Width, _textura.Height); }
+        Texture2D textura;
+        Point posicion;
+        public Rectangle rectangulo { get => new Rectangle(posicion.X - (textura.Width / 2), posicion.Y - (textura.Height / 2), textura.Width, textura.Height); }
 
         public Enemigo()
         {
-            _textura = Tools.Texture.CreateColorTexture(Game1._graphics.GraphicsDevice, Color.Red, 20, 50);
-            _posicion = new Point(650, 250);
+            textura = Tools.Texture.CreateColorTexture(Game1.graphicsDeviceManager.GraphicsDevice, Color.Red, 20, 50);
+            posicion = new Point(650, 250);
         }
         
-        public void Update(Pelota rpelota)
+        public void Update(Pelota pelota)
         {
-            _posicion.Y = rpelota._rectangulo.Center.Y;
+            this.posicion.Y = pelota.rectangulo.Center.Y;
         }
 
-        public void Draw(SpriteBatch rspriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            rspriteBatch.Draw(_textura, _rectangulo, Color.White);
+            spriteBatch.Draw(textura, rectangulo, Color.White);
         }
     }
 }

@@ -5,53 +5,53 @@ namespace MonoGame_Pong
 {
     class Pelota
     {
-        int _direccionX = 1;
-        int _direccionY = 1;
-        int _velocidad = 3;
+        int direccionX = 1;
+        int direccionY = 1;
+        int velocidad = 3;
 
-        Texture2D _textura;
-        Point _posicion;
-        public Rectangle _rectangulo { get => new Rectangle(_posicion.X - (_textura.Width / 2), _posicion.Y - (_textura.Height / 2), _textura.Width, _textura.Height); }
+        Texture2D textura;
+        Point posicion;
+        public Rectangle rectangulo { get => new Rectangle(posicion.X - (textura.Width / 2), posicion.Y - (textura.Height / 2), textura.Width, textura.Height); }
 
         public Pelota()
         {
-            _textura = Tools.Texture.CreateColorTexture(Game1._graphics.GraphicsDevice, Color.Blue, 10, 10);
-            _posicion = new Point(350, 250);
+            textura = Tools.Texture.CreateColorTexture(Game1.graphicsDeviceManager.GraphicsDevice, Color.Blue, 10, 10);
+            posicion = new Point(350, 250);
         }
 
 
-        public void Update(Enemigo renemigo, Jugador rjugador)
+        public void Update(Enemigo enemigo, Jugador jugador)
         {
             // check collision
             {
-                if (this._rectangulo.Intersects(renemigo._rectangulo))
+                if (this.rectangulo.Intersects(enemigo.rectangulo))
                 {
-                    _direccionX = -1;
+                    direccionX = -1;
                 }
-                if (this._rectangulo.Intersects(rjugador._rectangulo))
+                if (this.rectangulo.Intersects(jugador.rectangulo))
                 {
-                    _direccionX = 1;
+                    direccionX = 1;
                 }
-                _posicion.X += _direccionX * _velocidad;
+                posicion.X += direccionX * velocidad;
             }
 
             // update position
             {
-                if (_posicion.Y >= 500)
+                if (posicion.Y >= 500)
                 {
-                    _direccionY = -1;
+                    direccionY = -1;
                 }
-                if (_posicion.Y <= 0)
+                if (posicion.Y <= 0)
                 {
-                    _direccionY = 1;
+                    direccionY = 1;
                 }
-                _posicion.Y += _direccionY * _velocidad;
+                posicion.Y += direccionY * velocidad;
             }
         }
 
-        public void Draw(SpriteBatch rspriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            rspriteBatch.Draw(_textura, _rectangulo, Color.White);
+            spriteBatch.Draw(textura, rectangulo, Color.White);
         }
     }
 }

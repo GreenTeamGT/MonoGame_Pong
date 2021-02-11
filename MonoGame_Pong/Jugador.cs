@@ -9,11 +9,11 @@ namespace MonoGame_Pong
         int _veocidad = 3;
         Texture2D _textura;
         Point _posicion;
-        public Rectangle _rectangulo { get => new Rectangle(_posicion.X - (_textura.Width / 2), _posicion.Y - (_textura.Height / 2), _textura.Width, _textura.Height); }
+        public Rectangle rectangulo { get => new Rectangle(_posicion.X - (_textura.Width / 2), _posicion.Y - (_textura.Height / 2), _textura.Width, _textura.Height); }
 
         public Jugador()
         {
-            _textura = Tools.Texture.CreateColorTexture(Game1._graphics.GraphicsDevice, Color.Red, 20, 50);
+            _textura = Tools.Texture.CreateColorTexture(Game1.graphicsDeviceManager.GraphicsDevice, Color.Red, 20, 50);
             _posicion = new Point(50, 250);
         }
 
@@ -34,7 +34,7 @@ namespace MonoGame_Pong
 
         public void Draw(SpriteBatch rspriteBatch)
         {
-            rspriteBatch.Draw(_textura, _rectangulo, Color.White);
+            rspriteBatch.Draw(_textura, rectangulo, Color.White);
         }
     }
 }

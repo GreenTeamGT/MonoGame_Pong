@@ -44,25 +44,25 @@ namespace MonoGame_Pong
 
     public class Game1 : Game
     {
-        Jugador _jugador;
-        Pelota _pelota;
-        Enemigo _enemigo;
+        Jugador jugador;
+        Pelota pelota;
+        Enemigo enemigo;
 
-        Label _gameOverLabel;
+        Label gameOverLabel;
 
-        public static _GameState _gameState;
+        public static GameState gameState;
 
-        public static GraphicsDeviceManager _graphics;
+        public static GraphicsDeviceManager graphicsDeviceManager;
         public static ContentManager contentManager;
-        SpriteBatch _spriteBatch;
+        SpriteBatch spriteBatch;
 
         public Game1()
         {
             // Window
-            _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = Wellknown.Default.Width;
-            _graphics.PreferredBackBufferHeight = Wellknown.Default.Height;
-            _graphics.ApplyChanges();
+            graphicsDeviceManager = new GraphicsDeviceManager(this);
+            graphicsDeviceManager.PreferredBackBufferWidth = Wellknown.Default.Width;
+            graphicsDeviceManager.PreferredBackBufferHeight = Wellknown.Default.Height;
+            graphicsDeviceManager.ApplyChanges();
 
             // FPS
             base.IsFixedTimeStep = true;
@@ -78,14 +78,14 @@ namespace MonoGame_Pong
             base.IsMouseVisible = true;
 
             // Iniciar assets
-            _jugador = new Jugador();
-            _pelota = new Pelota();
-            _enemigo = new Enemigo();
-            _gameState = _GameState.modo_juego;
+            jugador = new Jugador();
+            pelota = new Pelota();
+            enemigo = new Enemigo();
+            gameState = GameState.modo_juego;
 
-            SpriteFont _spriteFont = Tools.Font.GenerateFont(texture2D: Tools.Texture.GetTexture(_graphics.GraphicsDevice, contentManager, "MyFont_PNG_260x56"), chars: Wellknown.Font.chars);
+            SpriteFont _spriteFont = Tools.Font.GenerateFont(texture2D: Tools.Texture.GetTexture(graphicsDeviceManager.GraphicsDevice, contentManager, "MyFont_PNG_260x56"), chars: Wellknown.Font.chars);
 
-            _gameOverLabel = new Label(new Rectangle(0, 0, 700, 250), _spriteFont, "GAME OVER!\nPRESS 'P' TO RESTART", Label.TextAlignment.Midle_Center, Color.Green, lineSpacing: 15);
+            gameOverLabel = new Label(new Rectangle(0, 0, 700, 250), _spriteFont, "GAME OVER!\nPRESS 'P' TO RESTART", Label.TextAlignment.Midle_Center, Color.Green, lineSpacing: 15);
 
             // Initialize Game
             base.Initialize();
@@ -93,7 +93,7 @@ namespace MonoGame_Pong
 
 
         protected override void LoadContent() {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         protected override void Update(GameTime gameTime) {
@@ -102,27 +102,27 @@ namespace MonoGame_Pong
                 Exit();
 
 
-            switch (_gameState)
+            switch (gameState)
             {
-                case _GameState.modo_juego:
-                    _pelota.Update(_enemigo, _jugador);
-                    _enemigo.Update(_pelota);
-                    _jugador.Update();
+                case GameState.modo_juego:
+                    pelota.Update(enemigo, jugador);
+                    enemigo.Update(pelota);
+                    jugador.Update();
 
-                    if (_pelota._rectangulo.X < _jugador._rectangulo.X || _pelota._rectangulo.X > _enemigo._rectangulo.X)
+                    if (pelota.rectangulo.X < jugador.rectangulo.X || pelota.rectangulo.X > enemigo.rectangulo.X)
                     {
-                        _gameState = _GameState.game_over;
+                        gameState = GameState.game_over;
                     }
 
                     break;
-                case _GameState.game_over:
+                case GameState.game_over:
                     if (Keyboard.GetState().IsKeyDown(Keys.P))
                     {
-                        _pelota = new Pelota();
-                        _gameState = _GameState.modo_juego;
+                        pelota = new Pelota();
+                        gameState = GameState.modo_juego;
                     }
                     break;
-                case _GameState.pausa:
+                case GameState.pausa:
                     break;
             }
 
@@ -131,31 +131,31 @@ namespace MonoGame_Pong
 
         protected override void Draw(GameTime gameTime) {
             base.GraphicsDevice.Clear(Color.CornflowerBlue);
-            this._spriteBatch.Begin();
+            this.spriteBatch.Begin();
 
-            switch (_gameState)
+            switch (gameState)
             {
-                case _GameState.modo_juego:
-                    _jugador.Draw(_spriteBatch);
-                    _pelota.Draw(_spriteBatch);
-                    _enemigo.Draw(_spriteBatch);
+                case GameState.modo_juego:
+                    jugador.Draw(spriteBatch);
+                    pelota.Draw(spriteBatch);
+                    enemigo.Draw(spriteBatch);
                     break;
-                case _GameState.game_over:
-                    _jugador.Draw(_spriteBatch);
-                    _pelota.Draw(_spriteBatch);
-                    _enemigo.Draw(_spriteBatch);
-                    _gameOverLabel.Draw(_spriteBatch);
+                case GameState.game_over:
+                    jugador.Draw(spriteBatch);
+                    pelota.Draw(spriteBatch);
+                    enemigo.Draw(spriteBatch);
+                    gameOverLabel.Draw(spriteBatch);
                     break;
-                case _GameState.pausa:
+                case GameState.pausa:
                     break;
             }
 
-            this._spriteBatch.End();
+            this.spriteBatch.End();
             base.Draw(gameTime);
         }
     }
 
-    public enum _GameState
+    public enum GameState
     {
         modo_juego,
         game_over,
